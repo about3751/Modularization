@@ -1,17 +1,18 @@
 package com.example.injun.mymodularization;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.view.View;
 import android.widget.Toast;
 
-import com.github.mzule.activityrouter.router.RouterCallback;
-import com.github.mzule.activityrouter.router.Routers;
+import com.example.extlibrary.BaseActivity;
 
-public class MainActivity extends AppCompatActivity
+import java.util.HashMap;
+import java.util.Map;
+
+public class MainActivity extends BaseActivity
 {
 
     @Override
@@ -19,20 +20,38 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        name = "小童童";
+        color = Color.CYAN;
     }
+
+    private String name;
+    private int color;
 
     public void onClick(View view)
     {
-        Routers.openForResult(this,RouterUtil.SCHEMM+"ModuleActivity",1);
+        switch (view.getId())
+        {
+            case R.id.btn1:
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("color", String.valueOf(Color.CYAN));
+                map.put("name", "小童童");
+                startActivityWithParam("UrlActivity", map);
+                break;
+        }
     }
 
+    @Override
+    protected int setStatusBarColor(@ColorInt int color)
+    {
+        return Color.RED;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if(requestCode == 1 && resultCode == 2)
+        if (requestCode == 1 && resultCode == 2)
         {
-            Toast.makeText(this, "返回结果"+data.getStringExtra("result").toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "返回结果" + data.getStringExtra("result").toString(), Toast.LENGTH_SHORT).show();
         }
     }
 }
